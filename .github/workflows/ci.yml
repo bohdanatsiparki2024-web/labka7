@@ -1,0 +1,36 @@
+# Назва робочого процесу, яку ви побачите в розділі "Actions" на GitHub
+name: Node.js CI
+
+# Умова запуску (Тригери)
+on:
+  push:
+    branches: [ main ]      # Запускати, коли хтось робить push у гілку main
+  pull_request:
+    branches: [ main ]      # Запускати при створенні запиту на злиття в main
+
+# Список завдань, які треба виконати
+jobs:
+  build:
+    # На якому сервері запускати (віртуальна машина з Ubuntu)
+    runs-on: ubuntu-latest
+
+    # Стратегія для тестування на різних версіях Node.js одночасно
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x]
+
+    # Покрокова інструкція дій
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3  # Крок 1: Копіюємо ваш код на віртуальну машину
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3 # Крок 2: Встановлюємо Node.js потрібної версії
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Install dependencies
+      run: npm install           # Крок 3: Встановлюємо бібліотеки (з package.json)
+
+    - name: Run tests
+      run: npm test              # Крок 4: Запускаємо тести
