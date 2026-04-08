@@ -18,7 +18,7 @@ describe("Library API Tests", () => {
 
   test("GET /fines/:userId should return user fines", async () => {
     const res = await request(app).get("/fines/1");
-    expect(res.statusCode).toBe(300);
+    expect(res.statusCode).toBe(200);
     expect(Array.isArray(res.body)).toBe(true);
   });
 });
